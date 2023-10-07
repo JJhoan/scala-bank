@@ -1,6 +1,6 @@
 package com.mybank.account.infrastructure.controller
 
-import com.mybank.account.application.send_money.SendMoneyCommand
+import com.mybank.account.application.send_money.MoneySenderCommand
 import com.mybank.shared.domain.bus.command.CommandBus
 import com.mybank.shared.infrastructure.controller.ApiController
 import play.api.libs.json._
@@ -16,7 +16,7 @@ class SendMoneyPutController @Inject( )( cc: ControllerComponents, commandBus: C
   def index( ): Action[Call] = Action.async( parse.json[Call] ) { implicit request: Request[Call] =>
     val body = request.body
     for {
-      _ <- commandBus.dispatch( SendMoneyCommand( body.from, body.to, body.money ) )
+      _ <- commandBus.dispatch( MoneySenderCommand( body.from, body.to, body.money ) )
     } yield Accepted
   }
 

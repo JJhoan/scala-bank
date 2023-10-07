@@ -1,6 +1,7 @@
 package com.mybank.shared.infrastructure.bus.event
 
 import com.mybank.shared.domain.Singleton
+import com.mybank.shared.domain.event.DomainEvent
 import org.reflections.Reflections
 
 import scala.jdk.CollectionConverters.CollectionHasAsScala

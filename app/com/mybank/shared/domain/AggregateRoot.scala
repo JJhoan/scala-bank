@@ -1,7 +1,6 @@
 package com.mybank.shared.domain
 
-import com.mybank.shared.infrastructure.bus.event.DomainEvent
-
+import com.mybank.shared.domain.event.DomainEvent
 import scala.collection.mutable
 
 abstract class AggregateRoot {

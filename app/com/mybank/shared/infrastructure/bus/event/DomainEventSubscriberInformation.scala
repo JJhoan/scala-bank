@@ -1,5 +1,7 @@
 package com.mybank.shared.infrastructure.bus.event
 
+import com.mybank.shared.domain.event.DomainEvent
+
 final class DomainEventSubscriberInformation( subscriberClass: Class[_], subscribedEvents: Set[ Class[ _ <: DomainEvent ] ]) {
   def contextName: String = {
     val nameParts = subscriberClass.getName.split( "\\." )

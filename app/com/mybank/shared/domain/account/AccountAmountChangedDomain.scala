@@ -1,6 +1,6 @@
 package com.mybank.shared.domain.account
 
-import com.mybank.shared.infrastructure.bus.event.DomainEvent
+import com.mybank.shared.domain.event.DomainEvent
 
 case class AccountAmountChangedDomain(
   aggregateId: String,

@@ -1,7 +1,8 @@
 package com.mybank.shared.infrastructure.bus.event.akka
 
 import akka.actor.{ Actor, ActorLogging, Props }
-import com.mybank.shared.infrastructure.bus.event.{ DomainEvent, DomainEventSubscribersInformation }
+import com.mybank.shared.domain.event.DomainEvent
+import com.mybank.shared.infrastructure.bus.event.DomainEventSubscribersInformation
 import play.api.Application
 
 final class EventPublisherActor(

@@ -6,24 +6,20 @@ import com.mybank.transaction.domain.TransactionDescription.TransactionDescripti
 
 final case class Account( id: AccountId, number: AccountNumber, amount: AccountAmount ) extends AggregateRoot {
   
-  def withdraw( amount: AccountAmount, description: TransactionDescription ): Account = {
-    if ( this.amount < amount ) {
+  def withdraw( amount: AccountAmount, description: TransactionDescription ): Unit = {
+    if ( this.amount hasBalance amount ) {
       throw new AccountInsufficientFunds( s"Account [${ number.value }] doesn't have sufficient funds" )
     }
     
-    val account = Account( id, number, this.amount - amount )
+    this.copy( amount = this.amount - amount )
     
     record( AccountAmountChangedDomain( id.toString, None, number.value, -amount.value, description.toString ) )
-    
-    account
   }
   
-  def deposit( amount: AccountAmount, description: TransactionDescription ): Account = {
-    val account = Account( id, number, this.amount + amount )
+  def deposit( amount: AccountAmount, description: TransactionDescription ): Unit = {
+    this.copy( amount = this.amount + amount )
     
     record( AccountAmountChangedDomain( id.toString, None, number.value, amount.value, description.toString ) )
-    
-    account
   }
   
   override def hashCode( ): Int = (id, number).hashCode( )

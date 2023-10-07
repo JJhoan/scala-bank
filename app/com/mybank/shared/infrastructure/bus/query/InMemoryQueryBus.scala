@@ -16,7 +16,6 @@ final class InMemoryQueryBus @Inject( )( information: QueryHandlerInformation, a
       val handler: QueryHandler[ Query, R ] = app.injector.instanceOf( commandHandlerClass )
                                                  .asInstanceOf[ QueryHandler[ Query, R ] ]
       
-      println(s" ->>>>>>>>>>>>>>>> $handler")
       handler.handle( query )
     } catch {
       case error: Throwable => throw new QueryHandlerExecutionError( error )

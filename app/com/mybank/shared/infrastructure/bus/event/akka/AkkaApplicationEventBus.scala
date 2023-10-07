@@ -3,7 +3,8 @@ package com.mybank.shared.infrastructure.bus.event.akka
 import akka.actor.ActorSystem
 import com.google.inject.Inject
 import com.mybank.shared.domain.Singleton
-import com.mybank.shared.infrastructure.bus.event.{ DomainEvent, DomainEventSubscribersInformation, EventBus }
+import com.mybank.shared.domain.event.{ DomainEvent, EventBus }
+import com.mybank.shared.infrastructure.bus.event.DomainEventSubscribersInformation
 import play.api.Application
 
 import scala.collection.mutable

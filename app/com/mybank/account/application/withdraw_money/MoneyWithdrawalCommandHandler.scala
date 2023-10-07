@@ -9,8 +9,8 @@ import com.mybank.transaction.domain.TransactionDescription
 import scala.concurrent.Future
 
 @Singleton
-class WithdrawMoneyCommandHandler @Inject( )( withdrawMoney: WithdrawMoney ) extends CommandHandler[ WithdrawMoneyCommand ] {
-  override def handle( command: WithdrawMoneyCommand ): Future[Unit] = {
+class MoneyWithdrawalCommandHandler @Inject( )( withdrawMoney: MoneyWithdrawal ) extends CommandHandler[ MoneyWithdrawalCommand ] {
+  override def handle( command: MoneyWithdrawalCommand ): Future[Unit] = {
     val accountId     = AccountId( command.accountId )
     val accountAmount = AccountAmount( command.amount )
     val description   = TransactionDescription.withName( command.description )

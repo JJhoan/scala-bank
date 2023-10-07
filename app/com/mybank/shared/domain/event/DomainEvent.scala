@@ -1,4 +1,4 @@
-package com.mybank.shared.infrastructure.bus.event
+package com.mybank.shared.domain.event
 
 import java.util.UUID
 

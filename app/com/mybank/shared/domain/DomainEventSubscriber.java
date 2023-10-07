@@ -1,7 +1,7 @@
 package com.mybank.shared.domain;
 
 
-import com.mybank.shared.infrastructure.bus.event.DomainEvent;
+import com.mybank.shared.domain.event.DomainEvent;
 
 import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)

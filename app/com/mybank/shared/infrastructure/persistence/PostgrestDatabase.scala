@@ -1,13 +1,10 @@
 package com.mybank.shared.infrastructure.persistence
 
-import com.mybank.account.application.{ AccountSearchable, AccountUpdatable, Rollback }
-import com.mybank.account.domain.{ Account, AccountId }
+import com.mybank.account.domain.{ Account, AccountId, AccountRepository }
 import com.mybank.shared.domain.Singleton
 import com.mybank.shared.infrastructure.persistence.models.AccountsTable.AccountsTable
 import com.mybank.shared.infrastructure.persistence.models.{ Accounts, Transactions, TransactionsTable }
-import com.mybank.transaction.application.create.TransactionCreatable
-import com.mybank.transaction.application.find.TransactionsSearchable
-import com.mybank.transaction.domain.Transaction
+import com.mybank.transaction.domain.{ Transaction, TransactionRepository }
 import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
 import slick.lifted.TableQuery
@@ -16,18 +13,18 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 @Singleton
-final class PostgrestDatabase extends AccountSearchable with AccountUpdatable with TransactionCreatable with TransactionsSearchable with Rollback {
+final class PostgrestDatabase extends AccountRepository with TransactionRepository {
   val db = Database.forConfig( "mydb" )
   
-  override def searchAccount( accountId: Int ): Future[ Option[ Account ] ] = {
+  override def search( accountId: AccountId ): Future[ Option[ Account ] ] = {
     val actions = for {
-      accountRows <- TableQuery[ AccountsTable ].filter( _.id === accountId ).result.headOption
+      accountRows <- TableQuery[ AccountsTable ].filter( _.id === accountId.value ).result.headOption
       accounts = accountRows.map( row => Account( row.id, row.number, row.amount ) )
     } yield accounts
     db.run( actions.transactionally )
   }
   
-  override def updateAccount( account: Account ): Future[ Unit ] = {
+  override def update( account: Account ): Future[ Unit ] = {
     val actions = for {
       _ <- TableQuery[ AccountsTable ].filter( _.id === account.id.value )
                                       .update( account.toAccountTable )
@@ -68,7 +65,4 @@ final class PostgrestDatabase extends AccountSearchable with AccountUpdatable wi
     def toAccountTable: Accounts = Accounts( account.id.value, account.number.value, account.amount.value )
   }
   
-  override def rollback( ): Future[ Unit ] = {
-    db.run( DBIO.seq( sqlu"ROLLBACK" ) )
-  }
 }
