@@ -1,23 +1,21 @@
-name := """bank"""
-organization := "youbank"
+name := "bank"
+version := "1.0"
 
-version := "1.0-SNAPSHOT"
+disablePlugins(AssemblyPlugin)
 
-lazy val root = (project in file(".")).enablePlugins(PlayScala)
+lazy val root = (project in file(".")).aggregate(app, shared, mooc, backoffice)
 
-scalaVersion := "2.13.10"
+lazy val app = Project(id = "app", base = file("app/"))
+  .dependsOn(mooc % "compile->compile;test->test")
+  .dependsOn(backoffice % "compile->compile;test->test")
+  .dependsOn(shared % "compile->compile;test->test")
 
-libraryDependencies += guice
-libraryDependencies += "org.scalatestplus.play" %% "scalatestplus-play" % "5.1.0" % Test
-// https://mvnrepository.com/artifact/org.reflections/reflections
-libraryDependencies += "org.reflections" % "reflections" % "0.10.2"
+lazy val shared = Project(id = "shared", base = file("src/shared"))
 
+lazy val mooc = Project(id = "mooc", base = file("src/mooc")).dependsOn(shared % "compile->compile;test->test")
+lazy val backoffice =
+  Project(id = "backoffice", base = file("src/backoffice")).dependsOn(shared % "compile->compile;test->test")
 
-libraryDependencies ++= Seq(
-  "com.typesafe.slick" %% "slick" % "3.4.1",
-  "com.typesafe.slick" %% "slick-hikaricp" % "3.4.1",
-  "org.postgresql" % "postgresql" % "42.5.4" //org.postgresql.ds.PGSimpleDataSource dependency
-)
 
 
 // Adds additional packages into Twirl
@@ -25,3 +23,9 @@ libraryDependencies ++= Seq(
 
 // Adds additional packages into conf/routes
 // play.sbt.routes.RoutesKeys.routesImport += "youbank.binders._"
+
+lazy val pack = taskKey[Unit]("Packages application as a fat jar")
+pack := {
+  (app /assembly ).toTask.value
+}
+
