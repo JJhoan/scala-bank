@@ -1,7 +1,7 @@
 package com.bank.mooc.transaction.application.find
 
-import com.mybank.account.domain.AccountId
-import com.mybank.transaction.domain.Transaction
+import com.bank.mooc.account.domain.AccountId
+import com.bank.mooc.transaction.domain.Transaction
 
 import scala.concurrent.Future
 

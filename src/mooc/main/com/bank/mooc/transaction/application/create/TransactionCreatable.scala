@@ -1,6 +1,6 @@
 package com.bank.mooc.transaction.application.create
 
-import com.mybank.transaction.domain.Transaction
+import com.bank.mooc.transaction.domain.Transaction
 
 import scala.concurrent.Future
 

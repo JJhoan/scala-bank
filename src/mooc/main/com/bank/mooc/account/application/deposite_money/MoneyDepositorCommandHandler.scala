@@ -6,7 +6,7 @@ import com.bank.shared.domain.bus.command.CommandHandler
 
 import scala.concurrent.Future
 
-final class MoneyDepositorCommandHandler ( depositMoney: MoneyDepositor ) extends CommandHandler[ MoneyDepositorCommand ] {
+final class MoneyDepositorCommandHandler ( implicit depositMoney: MoneyDepositor ) extends CommandHandler[ MoneyDepositorCommand ] {
   
   override def handle( command: MoneyDepositorCommand ): Future[ Unit ] = {
     val accountId              = AccountId( command.accountId )

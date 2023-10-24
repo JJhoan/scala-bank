@@ -5,8 +5,7 @@ import com.bank.shared.domain.bus.command.CommandHandler
 
 import scala.concurrent.Future
 
-@Singleton
-private class MoneySenderCommandHandler (sendMoney: MoneySender) extends CommandHandler[MoneySenderCommand] {
+final class MoneySenderCommandHandler (implicit sendMoney: MoneySender) extends CommandHandler[MoneySenderCommand] {
   override def handle(command: MoneySenderCommand): Future[Unit] = {
     sendMoney.execute( AccountId( command.from), AccountId( command.to), AccountAmount( command.amount) )
   }

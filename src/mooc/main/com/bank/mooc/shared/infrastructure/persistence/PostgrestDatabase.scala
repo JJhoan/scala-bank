@@ -4,7 +4,6 @@ import com.bank.mooc.account.domain.{ Account, AccountId, AccountRepository }
 import com.bank.mooc.shared.infrastructure.persistence.models.AccountsTable.AccountsTable
 import com.bank.mooc.shared.infrastructure.persistence.models.{ Accounts, Transactions, TransactionsTable }
 import com.bank.mooc.transaction.domain.{ Transaction, TransactionRepository }
-import com.mybank.account.domain.{ Account, AccountId, AccountRepository }
 import slick.jdbc.JdbcBackend.Database
 import slick.jdbc.PostgresProfile.api._
 import slick.lifted.TableQuery
@@ -13,7 +12,6 @@ import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
 
-@Singleton
 final class PostgrestDatabase extends AccountRepository with TransactionRepository {
   val db = Database.forConfig( "mydb" )
   
@@ -33,14 +31,14 @@ final class PostgrestDatabase extends AccountRepository with TransactionReposito
     db.run( actions.transactionally )
   }
   
-  override def createTransaction( transaction: Transaction ): Future[ Unit ] = {
+  override def save( transaction: Transaction ): Future[ Unit ] = {
     val actions = for {
       _ <- TableQuery[ TransactionsTable ] += transaction.toTable
     } yield ()
     db.run( actions.transactionally )
   }
   
-  override def searchTransactions( accountId: AccountId ): Future[ Seq[ Transaction ] ] = {
+  override def searchT( accountId: AccountId ): Future[ Seq[ Transaction ] ] = {
     val actions = for {
       transactionRows <- TableQuery[ TransactionsTable ].filter( _.accountId === accountId.value ).result
       accounts = transactionRows
@@ -66,4 +64,9 @@ final class PostgrestDatabase extends AccountRepository with TransactionReposito
     def toAccountTable: Accounts = Accounts( account.id.value, account.number.value, account.amount.value )
   }
   
+  override def save( account: Account ): Future[ Unit ] = ???
+  
+  override def allT( ): Future[ Seq[ Transaction ] ] = ???
+  
+  override def all( ): Future[ Seq[ Account ] ] = ???
 }

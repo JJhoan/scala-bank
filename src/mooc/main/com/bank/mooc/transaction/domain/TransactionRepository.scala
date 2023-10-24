@@ -6,7 +6,8 @@ import scala.concurrent.Future
 
 trait TransactionRepository {
   
-  def createTransaction( transaction: Transaction ): Future[ Unit ]
-  def searchTransactions( accountId: AccountId ): Future[ Seq[ Transaction ] ]
+  def save( transaction: Transaction ): Future[ Unit ]
+  def allT( ): Future[ Seq[ Transaction ] ]
+  def searchT( accountId: AccountId ): Future[ Seq[ Transaction ] ]
   
 }

@@ -6,7 +6,7 @@ import com.bank.shared.domain.bus.query.QueryHandler
 
 import scala.concurrent.Future
 
-final class AccountFinderQueryHandler( finder: AccountFinder ) extends QueryHandler[ AccountFinderQuery, AccountResponse ] {
+final class AccountFinderQueryHandler(implicit finder: AccountFinder ) extends QueryHandler[ AccountFinderQuery, AccountResponse ] {
   
   override def handle( query: AccountFinderQuery ): Future[ AccountResponse ] = {
     finder.execute( AccountId( query.accountId ) )

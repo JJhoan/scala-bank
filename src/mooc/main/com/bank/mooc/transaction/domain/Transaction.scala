@@ -1,9 +1,8 @@
 package com.bank.mooc.transaction.domain
 
+import com.bank.mooc.account.domain.AccountId
 import com.bank.mooc.transaction.domain.TransactionDescription.TransactionDescription
-import com.mybank.account.domain.AccountId
-import com.mybank.shared.domain.AggregateRoot
-import com.mybank.transaction.domain.TransactionDescription.TransactionDescription
+import com.bank.shared.domain.AggregateRoot
 
 import java.time.LocalDateTime
 import java.util.UUID

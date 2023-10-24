@@ -1,19 +1,15 @@
 package com.bank.mooc.transaction.application.find
 
-import com.google.inject.Inject
-import com.mybank.account.domain.AccountId
-import com.mybank.shared.domain.Singleton
+import com.bank.mooc.account.domain.AccountId
+import com.bank.mooc.transaction.domain.TransactionRepository
 
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-@Singleton
-final class TransactionFinder @Inject( )( transactionSearchable: TransactionsSearchable ) {
+final class TransactionFinder( repository: TransactionRepository ) {
   
   def find( accountId: AccountId ): Future[ TransactionsResponse ] = {
-    for {
-      transactions <- transactionSearchable.searchTransactions( accountId )
-    } yield TransactionsResponse( transactions )
+    repository.searchT( accountId ) map ( TransactionsResponse( _ ) )
   }
   
 }

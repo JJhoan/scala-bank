@@ -8,7 +8,7 @@ import scala.jdk.CollectionConverters.CollectionHasAsScala
 final class DomainEventSubscribersInformation {
   
   private val scanDomainEventSubscribers: Map[ Class[ _ ], DomainEventSubscriberInformation ] = {
-    val reflections = new Reflections( "com.mybank" )
+    val reflections = new Reflections( "com.bank" )
     val subscribers = reflections.getTypesAnnotatedWith( classOf[ DomainEventSubscriber ] ).asScala.toSet
     
     subscribers.map { subscriber =>

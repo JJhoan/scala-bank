@@ -1,16 +1,18 @@
 package com.bank.shared.infrastructure.bus.command
 
 import com.bank.shared.domain.bus.command.{ Command, CommandBus, CommandHandler }
+import com.bank.shared.infrastructure.dependency_injection.SharedModuleDependencyContainer
 
 import scala.concurrent.Future
 
-final class InMemoryCommandBus( information: CommandHandlerInformation, app: Application ) extends CommandBus {
+final class InMemoryCommandBus( information: CommandHandlerInformation, sharedModule: SharedModuleDependencyContainer ) extends CommandBus {
 
+  val apps: Seq[Class[_ <: CommandHandler[_ <: Command]] ] =
   override def dispatch( command: Command ): Future[Unit] = {
     try {
       val commandHandlerClass: Class[_ <: CommandHandler[_ <: Command]] = information.search( command.getClass )
 
-      val handler: CommandHandler[Command] = app.injector.instanceOf( commandHandlerClass ).asInstanceOf[CommandHandler[Command]]
+      val handler: CommandHandler[Command] = sharedModule.commands.find(c => c.getClass.isInstanceOf[commandHandlerClass.type] ).get
 
       handler.handle( command )
     } catch {

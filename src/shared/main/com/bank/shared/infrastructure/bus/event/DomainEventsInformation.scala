@@ -1,8 +1,6 @@
 package com.bank.shared.infrastructure.bus.event
 
 import com.bank.shared.domain.event.DomainEvent
-import com.mybank.shared.domain.Singleton
-import com.mybank.shared.domain.event.DomainEvent
 import org.reflections.Reflections
 
 import scala.jdk.CollectionConverters.CollectionHasAsScala
@@ -11,7 +9,7 @@ import scala.jdk.CollectionConverters.CollectionHasAsScala
 final class DomainEventsInformation {
   
   private val indexedDomainEvents: Map[ String, Class[ _ <: DomainEvent ] ] = {
-    val reflections: Reflections                      = new Reflections( "com.mybank" )
+    val reflections: Reflections                      = new Reflections( "com.bank" )
     val classes    : Set[ Class[ _ <: DomainEvent ] ] = reflections.getSubTypesOf( classOf[ DomainEvent ]
     ).asScala.toSet
     

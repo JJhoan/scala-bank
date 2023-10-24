@@ -16,10 +16,12 @@ final class AccountGetController ( cc: ControllerComponents, queryBus: QueryBus 
   def index( accountId: Int ): Action[AnyContent] = cc.actionBuilder.async {
     for {
       account <- queryBus.ask[AccountResponse]( AccountFinderQuery( accountId ) )
-    } yield Ok( findAccountResponse( account.id, account.number, account.amount ) )
+    } yield Ok( FindAccountResponse( account.id, account.number, account.amount ) )
   }
 
-  case class findAccountResponse( id: Int, number: String, amount: BigDecimal )
-  implicit val requestJson: OWrites[findAccountResponse] = Json.writes[findAccountResponse]
+  case class FindAccountResponse( id: Int, number: String, amount: BigDecimal )
+  implicit val requestJson: OWrites[FindAccountResponse] = Json.writes[FindAccountResponse]
+  
+
 
 }

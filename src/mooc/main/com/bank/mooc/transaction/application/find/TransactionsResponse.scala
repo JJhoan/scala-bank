@@ -1,11 +1,12 @@
 package com.bank.mooc.transaction.application.find
 
-import com.mybank.shared.domain.bus.query.Response
-import com.mybank.transaction.domain.Transaction
+import com.bank.mooc.transaction.domain.Transaction
+import com.bank.shared.domain.bus.query.Response
 
-final case class TransactionsResponse( transactions: Seq[TransactionResponse] ) extends Response
+final case class TransactionsResponse( transactions: Seq[ TransactionResponse ] ) extends Response
 
 object TransactionsResponse {
-  def apply: Seq[Transaction] => TransactionsResponse = transactions =>
-    TransactionsResponse(transactions.map(TransactionResponse(_)))
+  def apply( transactions: Seq[ Transaction ] ): TransactionsResponse = {
+    TransactionsResponse( transactions.map( TransactionResponse( _ ) ) )
+  }
 }
