@@ -1,6 +1,6 @@
 package com.bank.shared.domain.bus.query
 
-import com.mybank.shared.infrastructure.bus.query.QueryHandlerExecutionError
+import com.bank.shared.infrastructure.bus.query.QueryHandlerExecutionError
 
 import scala.concurrent.Future
 

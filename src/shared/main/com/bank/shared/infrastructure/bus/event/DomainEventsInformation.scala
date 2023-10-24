@@ -5,7 +5,6 @@ import org.reflections.Reflections
 
 import scala.jdk.CollectionConverters.CollectionHasAsScala
 
-@Singleton
 final class DomainEventsInformation {
   
   private val indexedDomainEvents: Map[ String, Class[ _ <: DomainEvent ] ] = {

@@ -13,8 +13,7 @@ object Configuration {
         "-unchecked",
         "-deprecation",
         "-feature",
-        "-language:higherKinds",
-        "-Ypartial-unification"
+        "-language:higherKinds"
       )
       if ( version.value.endsWith( "SNAPSHOT" ) ) {
         default :+ "-Xcheckinit"

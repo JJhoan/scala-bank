@@ -22,7 +22,9 @@ class TransactionsTable( tag: Tag ) extends Table[ Transactions ]( tag, "transac
   val description: Rep[ String ]        = column[ String ]( "description" )
   val date       : Rep[ LocalDateTime ] = column[ LocalDateTime ]( "date" )
   
+  private def applyTuple( t: (UUID, Int, BigDecimal, String, LocalDateTime) ): Transactions = Transactions.tupled( t )
+  
   override def * : ProvenShape[ Transactions ] = {
-    (id, accountId, amount, description, date) <> (Transactions.tupled, Transactions.unapply)
+    (id, accountId, amount, description, date).<>(applyTuple, Transactions.unapply)
   }
 }

@@ -9,7 +9,7 @@ import scala.jdk.CollectionConverters.CollectionHasAsScala
 final class CommandHandlerInformation {
 
   private val indexedCommandHandlers: Map[Class[_ <: Command], Class[_ <: CommandHandler[_ <: Command]]] = {
-    val reflections = new Reflections( "com.mybank" )
+    val reflections = new Reflections( "com.bank" )
     val classes: Set[Class[_ <: CommandHandler[Command]]] = reflections.getSubTypesOf( classOf[ CommandHandler[ Command ]] ).asScala.toSet
 
     classes.map( handler => {

@@ -5,17 +5,14 @@ import com.bank.mooc.transaction.application.find.{ TransactionFinder, Transacti
 import com.bank.mooc.transaction.domain.TransactionRepository
 import com.bank.mooc.transaction.infrastructure.repository.DoobieMySqlTransactionRepository
 import com.bank.shared.domain.bus.command.{ Command, CommandHandler }
-import com.bank.shared.domain.bus.query.{ Query, QueryBus, QueryHandler, Response }
-import com.bank.shared.domain.event.EventBus
+import com.bank.shared.domain.bus.query.{ Query, QueryHandler, Response }
 import com.bank.shared.infrastructure.doobie.DoobieDbConnection
 
 import scala.concurrent.ExecutionContext
 
 final class TransactionModuleDependencyContainer(
   implicit doobieDbConnection: DoobieDbConnection,
-  executionContext:            ExecutionContext,
-  eventBus:                    EventBus,
-  queryBus:                    QueryBus
+  executionContext:            ExecutionContext
 ) {
   val repository: TransactionRepository = new DoobieMySqlTransactionRepository
   
@@ -25,11 +22,12 @@ final class TransactionModuleDependencyContainer(
   private val createTransactionCommandHandler = new CreateTransactionCommandHandler
   private val transactionFinderCommandHandler = new TransactionFinderQueryHandler
   
-  val commands: Seq[ CommandHandler[ Command ] ] = Seq[ CommandHandler[ Command ] ](
-    createTransactionCommandHandler,
-    transactionFinderCommandHandler
+  val commands: Seq[ CommandHandler[ _ <: Command ] ] = Seq[ CommandHandler[ _ <: Command ] ](
+    createTransactionCommandHandler
   )
   
-  val queries: Seq[QueryHandler[ Query, Response ]] = Seq.empty
+  val queries: Seq[ QueryHandler[ _ <: Query, _ <: Response ] ] = Seq[ QueryHandler[ _ <: Query, _ <: Response ] ](
+    transactionFinderCommandHandler
+  )
   
 }

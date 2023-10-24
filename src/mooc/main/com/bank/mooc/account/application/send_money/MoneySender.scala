@@ -6,7 +6,6 @@ import com.bank.shared.domain.event.EventBus
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-@Singleton
 final class MoneySender ( repository: AccountRepository, eventBus: EventBus ) {
   
   private val moneyWithdrawal = new MoneyWithdrawal( repository )

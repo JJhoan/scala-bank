@@ -7,11 +7,11 @@ import com.bank.shared.domain.AggregateRoot
 import java.time.LocalDateTime
 import java.util.UUID
 
-final case class Transaction private(
+final case class Transaction (
   id:          TransactionId,
   accountId:   AccountId,
   amount:      TransactionAmount,
-  description: TransactionDescription,
+  description: String,
   date:        TransactionDate
 ) extends AggregateRoot
 
@@ -23,7 +23,7 @@ object Transaction {
     val transactionDescription = TransactionDescription.withName( description )
     val transactionDate        = TransactionDate( )
     
-    new Transaction( transactionId, accountId, transactionAmount, transactionDescription, transactionDate )
+    new Transaction( transactionId, accountId, transactionAmount, transactionDescription.toString, transactionDate )
   }
   
   def apply( id: UUID, account: Int, amount: BigDecimal, description: String, date: LocalDateTime ): Transaction = {
@@ -33,14 +33,14 @@ object Transaction {
     val transactionDescription = TransactionDescription.withName( description )
     val transactionDate        = TransactionDate( date )
     
-    new Transaction( transactionId, accountId, transactionAmount, transactionDescription, transactionDate )
+    new Transaction( transactionId, accountId, transactionAmount, transactionDescription.toString, transactionDate )
   }
   
   def apply( account: AccountId, amount: TransactionAmount, description: TransactionDescription ): Transaction = {
     val transactionId   = TransactionId( UUID.randomUUID( ) )
     val transactionDate = TransactionDate( )
     
-    new Transaction( transactionId, account, amount, description, transactionDate )
+    new Transaction( transactionId, account, amount, description.toString, transactionDate )
   }
   
 }

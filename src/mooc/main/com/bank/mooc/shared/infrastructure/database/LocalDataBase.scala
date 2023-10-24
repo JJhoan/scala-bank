@@ -5,17 +5,10 @@ import com.bank.mooc.account.domain.{ Account, AccountId }
 import com.bank.mooc.transaction.application.create.TransactionCreatable
 import com.bank.mooc.transaction.application.find.TransactionsSearchable
 import com.bank.mooc.transaction.domain.Transaction
-import com.mybank.account.application.{ AccountSearchable, AccountUpdatable }
-import com.mybank.account.domain.{ Account, AccountId }
-import com.mybank.transaction.application.create.TransactionCreatable
-import com.mybank.transaction.application.find.TransactionsSearchable
-import com.mybank.transaction.domain.Transaction
 
-import javax.inject.Singleton
 import scala.concurrent.ExecutionContext.Implicits.global
 import scala.concurrent.Future
 
-@Singleton
 class LocalDataBase extends AccountSearchable with AccountUpdatable with TransactionCreatable with TransactionsSearchable {
   private val accounts: scala.collection.mutable.Set[ Account ] = scala.collection.mutable.Set(
     Account( 1, "1234-6661-1234", 500000.00 ),

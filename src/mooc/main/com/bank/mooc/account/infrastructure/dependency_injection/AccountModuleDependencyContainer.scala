@@ -10,7 +10,6 @@ import com.bank.shared.domain.bus.command.{ Command, CommandHandler }
 import com.bank.shared.domain.bus.query.{ Query, QueryBus, QueryHandler, Response }
 import com.bank.shared.domain.event.EventBus
 import com.bank.shared.infrastructure.doobie.DoobieDbConnection
-import com.mybank.account.application.withdraw_money.MoneyWithdrawalCommandHandler
 
 import scala.concurrent.ExecutionContext
 
@@ -32,14 +31,13 @@ final class AccountModuleDependencyContainer(
   private val moneySenderCommandHandler    : MoneySenderCommandHandler     = new MoneySenderCommandHandler
   private val moneyWithdrawalCommandHandler: MoneyWithdrawalCommandHandler = new MoneyWithdrawalCommandHandler
   
-  val commands: Seq[ CommandHandler[ Command ] ] = Seq[ CommandHandler[ Command ] ](
-    accountFinderQueryHandler,
+  val commands: Seq[ CommandHandler[ _ <: Command ] ] = Seq[ CommandHandler[ _ <: Command ] ](
     moneyDepositorCommandHandler,
     moneySenderCommandHandler,
     moneyWithdrawalCommandHandler
   )
   
-  val queries: Seq[QueryHandler[ Query, Response ]] = Seq[QueryHandler[ Query, Response ]](
+  val queries: Seq[ QueryHandler[ _ <: Query, _ <: Response ] ] = Seq[ QueryHandler[ _ <: Query, _ <: Response ] ](
     accountFinderQueryHandler
   )
   

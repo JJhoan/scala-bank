@@ -8,7 +8,6 @@ object Dependencies {
   
   val shared: Seq[ ModuleID ] = Seq(
     // Tes
-    "org.scalatest" %% "scalatest" % "3.2.15" % Test,
     "com.typesafe.akka" %% "akka-testkit" % Versions.akka % Test,
     "com.typesafe.akka" %% "akka-http-testkit" % Versions.akkaHttp % Test,
     "org.reflections" % "reflections" % "0.10.2",

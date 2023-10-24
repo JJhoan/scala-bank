@@ -13,6 +13,7 @@ object AccountsTable {
     val number: Rep[ String ]     = column[ String ]( "number" )
     val amount: Rep[ BigDecimal ] = column[ BigDecimal ]( "amount" )
     
-    override def * : ProvenShape[ Accounts ] = (id, number, amount) <> (Accounts.tupled, Accounts.unapply)
+    private def applyTuple(t: (Int, String, BigDecimal)): Accounts = Accounts.tupled(t)
+    override def * : ProvenShape[Accounts] = (id, number, amount).<>(applyTuple, Accounts.unapply)
   }
 }

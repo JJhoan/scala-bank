@@ -8,9 +8,8 @@ import scala.concurrent.Future
 final class InMemoryQueryBus ( information: QueryHandlerInformation, sharedModule: SharedModuleDependencyContainer ) extends QueryBus {
   override def ask[ R <: Response ]( query: Query ): Future[ R ] = {
     try {
-      val commandHandlerClass: Class[ _ <: QueryHandler[ _ <: Query, _ <: Response ] ] = information
-        .search( query.getClass )
-      val handler: QueryHandler[ Query, R ] = sharedModule.queries.find( q => q.isInstanceOf[commandHandlerClass.type ]).get
+      val commandHandlerClass: Class[ _ <: QueryHandler[ _ <: Query, _ <: R ] ] = information.search( query.getClass ).asInstanceOf[Class[ _ <: QueryHandler[ _ <: Query, _ <: R ]]]
+      val handler: QueryHandler[ Query, R ] = sharedModule.queries.find( q => q.getClass.isInstance(commandHandlerClass)).get.asInstanceOf[QueryHandler[ Query, R ]]
       
       handler.handle( query )
     } catch {
