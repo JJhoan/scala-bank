@@ -7,6 +7,6 @@ final case class TransactionResponse( accountId: Int, amount: BigDecimal, descri
 
 object TransactionResponse {
   def apply( transaction: Transaction ): TransactionResponse = {
-    TransactionResponse( transaction.accountId.value, transaction.amount.value, transaction.description.toString )
+    TransactionResponse( transaction.accountId.value, transaction.amount.value, transaction.description )
   }
 }

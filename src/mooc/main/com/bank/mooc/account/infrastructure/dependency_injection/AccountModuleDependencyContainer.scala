@@ -19,7 +19,7 @@ final class AccountModuleDependencyContainer(
   eventBus:                    EventBus,
   queryBus:                    QueryBus
 ) {
-  val repository: AccountRepository = new DoobieMySqlAccountRepository( )
+  val repository: AccountRepository = new DoobieMySqlAccountRepository
   
   implicit val accountFinder  : AccountFinder   = new AccountFinder( repository )
   implicit val moneyDepositor : MoneyDepositor  = new MoneyDepositor( eventBus, repository )

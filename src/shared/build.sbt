@@ -8,4 +8,8 @@ Compile / resourceDirectory := baseDirectory.value / "conf"
 
 libraryDependencies ++= Dependencies.shared
 
+TaskKey[Unit]("createDbTables") := (Compile / runMain)
+  .toTask(" tv.codely.shared.infrastructure.environment.DbTablesCreator")
+  .value
+
 assembly /test  := {}

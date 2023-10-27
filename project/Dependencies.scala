@@ -2,10 +2,13 @@ import sbt.*
 
 object Dependencies {
   object Versions {
-    val akka     = "2.8.0"
-    val akkaHttp = "10.5.0"
+    val akka           = "2.8.0"
+    val akkaHttp       = "10.5.0"
+    val DoobieVersion  = "1.0.0-RC1"
+    val NewTypeVersion = "0.4.4"
   }
   
+  lazy val doobieVersion = "0.5.4"
   val shared: Seq[ ModuleID ] = Seq(
     // Tes
     "com.typesafe.akka" %% "akka-testkit" % Versions.akka % Test,
@@ -19,7 +22,11 @@ object Dependencies {
     "com.typesafe.akka" %% "akka-actor" % Versions.akka,
     "com.typesafe.akka" %% "akka-stream" % Versions.akka, // Explicit dependency due to: https://bit.ly/akka-http-25
     "com.typesafe.akka" %% "akka-http-spray-json" % Versions.akkaHttp,
-    "org.tpolecat" %% "doobie-core" % "0.13.4",
+    // And add any of these as needed
+    "org.tpolecat" %% "doobie-core" % "1.0.0-RC1",
+    "org.tpolecat" %% "doobie-postgres" % "1.0.0-RC1",
+    
+    
     "mysql" % "mysql-connector-java" % "8.0.33",
     "com.github.scopt" %% "scopt" % "4.1.0", // Command Line Commands such as de DbTablesCreator
     "ch.qos.logback" % "logback-classic" % "1.4.7", // Logging backend implementation

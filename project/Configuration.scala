@@ -1,14 +1,13 @@
 import sbt.Keys.*
-import sbt.{ Tests, * }
+import sbt.{ Def, Tests, * }
 
 
 object Configuration {
-  val commonSettings = Seq(
-    organization := "com.mybank",
-    scalaVersion := "2.13.10",
+  val commonSettings: Seq[ Def.Setting[ ? >: String & Task[ Seq[ String ] ] & Boolean & Task[ Seq[ TestOption ] ] ] ] = Seq(
+    organization := "com.bank",
+    scalaVersion := "2.13.3",
     scalacOptions := {
       val default = Seq(
-        "-Xlint",
         "-Xfatal-warnings",
         "-unchecked",
         "-deprecation",
@@ -23,6 +22,14 @@ object Configuration {
     },
     ( Test / console / scalacOptions ) --= Seq( "-Ywarn-unused:imports", "-Xfatal-warnings" ),
     ( Test / console / scalacOptions ) ++= Seq( "-Ywarn-unused:-imports" ),
-    exportJars := true
+    javaOptions += "-Duser.timezone=UTC",
+    exportJars := true,
+    Test / fork := false,
+    Test / parallelExecution := false,
+    Test / testOptions ++= Seq(
+      Tests.Argument( TestFrameworks.ScalaTest, "-u", "target/test-reports" ),
+      Tests.Argument( "-oDF" )
+    ),
+    cancelable in Global := true,
   )
 }

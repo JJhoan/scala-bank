@@ -11,7 +11,7 @@ final class InMemoryCommandBus( information: CommandHandlerInformation, sharedMo
     try {
       val commandHandlerClass: Class[_ <: CommandHandler[_ <: Command]] = information.search( command.getClass )
 
-      val handler: CommandHandler[Command] = sharedModule.commands.find(c => c.getClass.isInstance(commandHandlerClass) ).get
+      val handler: CommandHandler[Command] = sharedModule.commands.find(c => c.getClass.isInstance(commandHandlerClass) ).get.asInstanceOf[CommandHandler[Command]]
 
       handler.handle( command )
     } catch {

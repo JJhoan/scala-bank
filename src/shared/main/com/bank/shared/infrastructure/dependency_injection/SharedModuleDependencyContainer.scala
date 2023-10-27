@@ -18,17 +18,17 @@ final class SharedModuleDependencyContainer(
   dbConfig:        JdbcConfig,
 ) {
   
-  val commands: mutable.Seq[ CommandHandler[ Command ] ] = mutable.Seq.empty
-  val queries: mutable.Seq[ QueryHandler[ Query, Response ] ] = mutable.Seq.empty
+  val commands: mutable.Seq[ CommandHandler[ _ <: Command ] ]            = mutable.Seq.empty
+  val queries : mutable.Seq[ QueryHandler[ _ <: Query, _ <: Response ] ] = mutable.Seq.empty
   
   implicit val actorSystem: ActorSystem = ActorSystem( actorSystemName )
-  val materializer    : Materializer     = Materializer( actorSystem )
-  val executionContext: ExecutionContext = actorSystem.dispatcher
+  val materializer: Materializer = Materializer( actorSystem )
+  implicit val executionContext: ExecutionContext = actorSystem.dispatcher
   
   implicit val doobieDbConnection: DoobieDbConnection = new DoobieDbConnection( dbConfig )
   
   val domainEvent = new DomainEventSubscribersInformation
-  implicit val eventBus: AkkaApplicationEventBus = new AkkaApplicationEventBus( actorSystem, domainEvent)
+  implicit val eventBus: AkkaApplicationEventBus = new AkkaApplicationEventBus( actorSystem, domainEvent )
   
   val logger: Logger = new ScalaLoggingLogger
 }

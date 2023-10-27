@@ -1,15 +1,17 @@
 package com.bank.mooc.account.infrastructure.repository
 
+import cats.effect.unsafe.implicits.global
 import com.bank.mooc.account.domain.{ Account, AccountId, AccountRepository }
 import com.bank.shared.infrastructure.doobie.DoobieDbConnection
 import doobie.implicits._
 
 import scala.concurrent.{ ExecutionContext, Future }
 
-final class DoobieMySqlAccountRepository( implicit db: DoobieDbConnection, executionContext: ExecutionContext )
+final class DoobieMySqlAccountRepository( implicit db: DoobieDbConnection, ec: ExecutionContext )
   extends AccountRepository {
+  
   override def all( ): Future[ Seq[ Account ] ] = {
-    db.read( sql"SELECT * FROM accounts".query[ Account ].to[ Seq ] )
+    sql"SELECT * FROM accounts".query[ Account ].to[ Seq ].transact( db.transactor).unsafeToFuture()
   }
   
   override def save( account: Account ): Future[ Unit ] = {

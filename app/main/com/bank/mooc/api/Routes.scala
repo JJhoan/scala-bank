@@ -5,7 +5,6 @@ import akka.http.scaladsl.model.StatusCodes
 import akka.http.scaladsl.server.Directives._
 import akka.http.scaladsl.server.Route
 import com.bank.mooc.api.controller.account.SendMoneyPutController._
-import spray.json.JsValue
 
 import scala.util.{ Failure, Success }
 
@@ -31,9 +30,9 @@ final class Routes( container: EntryPointDependencyContainer ) {
   //val all: Route = status ~ user ~ video
   val all: Route = account
   
-  private def jsonBody( handler: Map[ String, JsValue ] => Route ): Route = {
+  /*private def jsonBody( handler: Map[ String, JsValue ] => Route ): Route = {
     entity( as[ JsValue ] )( json => handler( json.asJsObject.fields ) )
-  }
+  }*/
 }
 
 

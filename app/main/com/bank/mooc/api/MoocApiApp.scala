@@ -2,10 +2,10 @@ package com.bank.mooc.api
 
 import akka.actor.ActorSystem
 import akka.http.scaladsl.Http
-import akka.stream.Materializer
 import com.bank.mooc.account.infrastructure.dependency_injection.AccountModuleDependencyContainer
 import com.bank.mooc.transaction.infrastructure.dependency_injection.TransactionModuleDependencyContainer
-import com.bank.shared.domain.bus.command.{ Command, CommandHandler }
+import com.bank.shared.domain.bus.command.CommandBus
+import com.bank.shared.domain.bus.query.QueryBus
 import com.bank.shared.infrastructure.bus.command.{ CommandHandlerInformation, InMemoryCommandBus }
 import com.bank.shared.infrastructure.bus.event.akka.AkkaApplicationEventBus
 import com.bank.shared.infrastructure.bus.query.{ InMemoryQueryBus, QueryHandlerInformation }
@@ -13,13 +13,10 @@ import com.bank.shared.infrastructure.dependency_injection.SharedModuleDependenc
 import com.bank.shared.infrastructure.doobie.{ DoobieDbConnection, JdbcConfig }
 import com.typesafe.config.ConfigFactory
 
-import scala.collection.mutable
 import scala.concurrent.ExecutionContext
 import scala.io.StdIn
 
 object MoocApiApp {
-  
-  val commands: mutable.Seq[ CommandHandler[ Command ] ]
   
   def start( ): Unit = {
     val appConfig    = ConfigFactory.load( "application" )
@@ -31,27 +28,28 @@ object MoocApiApp {
     
     val dbConfig = JdbcConfig( appConfig.getConfig( "database" ) )
     
-    implicit val queryBus  : InMemoryQueryBus   = new InMemoryQueryBus( new QueryHandlerInformation )
-    implicit val commandBus: InMemoryCommandBus = new InMemoryCommandBus( new CommandHandlerInformation )
-    
     val sharedDependencies: SharedModuleDependencyContainer = new SharedModuleDependencyContainer( actorSystemName,
       dbConfig )
     
+    implicit val queryBus  : QueryBus   = new InMemoryQueryBus( new QueryHandlerInformation,
+      sharedDependencies )
+    implicit val commandBus: CommandBus = new InMemoryCommandBus( new CommandHandlerInformation,
+      sharedDependencies )
+    
     implicit val doobieDbConnection: DoobieDbConnection      = sharedDependencies.doobieDbConnection
+    implicit val executionContext: ExecutionContext = sharedDependencies.executionContext
     implicit val eventBus          : AkkaApplicationEventBus = sharedDependencies.eventBus
     
     val accountDependencies     = new AccountModuleDependencyContainer
     val transactionDependencies = new TransactionModuleDependencyContainer
     
-    sharedDependencies.commands.appended( accountDependencies.commands )
-    sharedDependencies.commands.appended( transactionDependencies.commands )
+    sharedDependencies.commands :++ accountDependencies.commands
+    sharedDependencies.commands :++ transactionDependencies.commands
     
-    sharedDependencies.queries.appended( transactionDependencies.queries )
-    sharedDependencies.queries.appended( transactionDependencies.queries )
+    sharedDependencies.queries :++ transactionDependencies.queries
+    sharedDependencies.queries :++ transactionDependencies.queries
     
     implicit val system          : ActorSystem      = sharedDependencies.actorSystem
-    implicit val materializer    : Materializer     = sharedDependencies.materializer
-    implicit val executionContext: ExecutionContext = sharedDependencies.executionContext
     
     val container = new EntryPointDependencyContainer( queryBus, commandBus )
     
